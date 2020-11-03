@@ -16,6 +16,10 @@ defmodule KvUmbrella.MixProject do
   #
   # Run "mix help deps" for examples and options.
   defp deps do
-    []
+    [
+      {:credo, "~> 1.5.0-rc.2", only: [:dev, :test], runtime: false},
+      {:inch_ex, github: "rrrene/inch_ex", only: [:dev, :test]},
+      {:ex_guard, github: "lastobelus/ex_guard", only: :dev}
+    ]
   end
 end
