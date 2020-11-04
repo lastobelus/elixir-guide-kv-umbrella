@@ -31,6 +31,8 @@ defmodule KVServer do
     {:ok, client} = :gen_tcp.accept(socket)
     # serve each client in it's own task, using KVServer.TaskSupervisor to supervise them
     {:ok, pid} = Task.Supervisor.start_child(KVServer.TaskSupervisor, fn -> serve(client) end)
+    # the task needs to become the "controlling process" of the client socket, so that
+    # the acceptor won't bring down all clients if it crashes
     :ok = :gen_tcp.controlling_process(client, pid)
     # continue to accept clients
     loop_acceptor(socket)
