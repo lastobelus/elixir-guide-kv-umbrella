@@ -1,4 +1,7 @@
 defmodule KVServer.Command do
+  @moduledoc """
+  Parse and run KV commands using :kv
+  """
   @doc ~S"""
   Parses the given `line` into a command.
 
@@ -33,5 +36,12 @@ defmodule KVServer.Command do
       ["DELETE", bucket, key] -> {:ok, {:delete, bucket, key}}
       _ -> {:error, :unknown_command}
     end
+  end
+
+  @doc """
+    Runs the given `command`
+  """
+  def run(command) do
+    {:ok, "OK\r\n"}
   end
 end
