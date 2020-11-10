@@ -39,20 +39,28 @@ defmodule KVServer do
   end
 
   defp serve(socket) do
+    # without Elixir `with` construct, we would need nested case statement:
+    # msg =
+    #   case read_line(socket) do
+    #     {:ok, data} ->
+    #       case KVServer.Command.parse(data) do
+    #         {:ok, command} ->
+    #           KVServer.Command.run(command)
+
+    #         {:error, _} = err ->
+    #           err
+    #       end
+
+    #     {:error, _} = err ->
+    #       err
+    #   end
+
+    # `with` runs each match in sequence, returning the
+    # result of `do:` or the first result that doesn't match
     msg =
-      case read_line(socket) do
-        {:ok, data} ->
-          case KVServer.Command.parse(data) do
-            {:ok, command} ->
-              KVServer.Command.run(command)
-
-            {:error, _} = err ->
-              err
-          end
-
-        {:error, _} = err ->
-          err
-      end
+      with {:ok, data} <- read_line(socket),
+           {:ok, command} <- KVServer.Command.parse(data),
+           do: KVServer.Command.run(command)
 
     write_line(socket, msg)
     serve(socket)
