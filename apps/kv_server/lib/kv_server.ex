@@ -79,6 +79,11 @@ defmodule KVServer do
     :gen_tcp.send(socket, "UNKNOWN COMMAND\r\n")
   end
 
+  defp write_line(socket, {:error, :not_found}) do
+    # Bucket not found
+    :gen_tcp.send(socket, "NOT FOUND\r\n")
+  end
+
   defp write_line(_socket, {:error, :closed}) do
     # The connection, was closed; write to the client and exit
     exit(:shutdown)

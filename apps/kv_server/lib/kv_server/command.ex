@@ -2,6 +2,16 @@ defmodule KVServer.Command do
   @moduledoc """
   Parse and run KV commands using :kv
   """
+  @type command ::
+          {:create, binary}
+          | {:delete, binary, binary}
+          | {:get, binary, binary}
+          | {:put, binary, binary, binary}
+  @type response :: {:error, :not_found} | {:ok, <<_::32, _::_*8>>}
+
+  @spec parse(binary) ::
+          {:error, :unknown_command}
+          | {:ok, command()}
   @doc ~S"""
   Parses the given `line` into a command.
 
@@ -38,10 +48,44 @@ defmodule KVServer.Command do
     end
   end
 
+  @spec run(command()) :: response()
   @doc """
-    Runs the given `command`
+    Runs the given `command`.
   """
-  def run(command) do
+  # a bodiless function is used to declare and/or document the
+  # default arguments for a multi-clause function
+  def run(command)
+
+  def run({:create, bucket}) do
+    KV.Registry.create(KV.Registry, bucket)
     {:ok, "OK\r\n"}
+  end
+
+  def run({:get, bucket, key}) do
+    lookup(bucket, fn pid ->
+      value = KV.Bucket.get(pid, key)
+      {:ok, "#{value}\r\nOK\r\n"}
+    end)
+  end
+
+  def run({:put, bucket, key, value}) do
+    lookup(bucket, fn pid ->
+      KV.Bucket.put(pid, key, value)
+      {:ok, "OK\r\n"}
+    end)
+  end
+
+  def run({:delete, bucket, key}) do
+    lookup(bucket, fn pid ->
+      KV.Bucket.delete(pid, key)
+      {:ok, "OK\r\n"}
+    end)
+  end
+
+  defp lookup(bucket, callback) do
+    case KV.Registry.lookup(KV.Registry, bucket) do
+      {:ok, pid} -> callback.(pid)
+      :error -> {:error, :not_found}
+    end
   end
 end
