@@ -1,3 +1,4 @@
+# credo:disable-for-next-line Credo.Check.Readability.ModuleDoc
 defmodule KV.MixProject do
   use Mix.Project
 
@@ -19,7 +20,7 @@ defmodule KV.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {KV, ["yoyoyoYO, baby Pop!"]}
+      mod: {KV, ["KV reporting for duty!"]}
     ]
   end
 

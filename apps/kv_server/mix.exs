@@ -1,3 +1,4 @@
+# credo:disable-for-next-line Credo.Check.Readability.ModuleDoc
 defmodule KVServer.MixProject do
   use Mix.Project
 
