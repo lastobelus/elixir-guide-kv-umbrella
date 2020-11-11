@@ -48,7 +48,7 @@ defmodule KVServer.Command do
     end
   end
 
-  @spec run(command(), pid()) :: response()
+  @spec run(command(), atom() | pid()) :: response()
   @doc """
     Runs the given `command`.
 
