@@ -1,0 +1,25 @@
+{
+  "version": "0.1",
+  "dictionaryDefinitions": [
+    {
+      "name": "elixirSupplement",
+      "path": "./dictionaries/elixirSupp.txt"
+    },
+    {
+      "name": "htmlSupp",
+      "path": "./dictionaries/htmlSupp.txt"
+    }
+  ],
+  "dictionaries": [],
+  "languageSettings": [
+    {
+      "languageId": "elixir",
+      "dictionaries": ["elixirSupplement"]
+    },
+    {
+      "languageId": "html",
+      "dictionaries": ["htmlSupp"]
+    }
+  ],
+  "words": []
+}

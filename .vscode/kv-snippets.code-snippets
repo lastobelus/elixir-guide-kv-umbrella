@@ -25,6 +25,13 @@
 		"body": [
 			"KV.Registry.create(registry, \"shopping\")"
 		],
-		"description": "register 'shopping' bucket""
+		"description": "register 'shopping' bucket"
+	},
+	"string with windows line endings": {
+		"prefix": "woz",
+		"body": [
+			"\"$1\\r\\n\"$0"
+		],
+		"description": "line with carriage return + newline"
 	}
 }
