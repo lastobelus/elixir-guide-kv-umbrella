@@ -26,6 +26,7 @@ defmodule KVServerTest do
   # Because of the overhead involved with each test, it is often better
   # to use a single test to test multiple related paths through the app
   # then to break it up into multiple focused tests
+  @tag :distributed
   test "server interaction", %{socket: socket} do
     assert send_and_recv(socket, "UNKNOWN shopping\r\n") ==
              "UNKNOWN COMMAND\r\n"

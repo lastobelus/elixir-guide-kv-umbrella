@@ -12,6 +12,7 @@ defmodule KVServer.CommandTest do
     %{registry: context.test}
   end
 
+  @tag :distributed
   test "creates a bucket", %{registry: registry} do
     assert KV.Registry.lookup(registry, "shopping") == :error
 
@@ -19,6 +20,7 @@ defmodule KVServer.CommandTest do
     assert {:ok, _bucket} = KV.Registry.lookup(registry, "shopping")
   end
 
+  @tag :distributed
   test "gets a key ", %{registry: registry} do
     bucket = KV.Registry.create(registry, "shopping")
     KV.Bucket.put(bucket, "milk", "7")
@@ -26,6 +28,7 @@ defmodule KVServer.CommandTest do
     assert {:ok, "7\r\nOK\r\n"} = KVServer.Command.run({:get, "shopping", "milk"}, registry)
   end
 
+  @tag :distributed
   test "puts a key ", %{registry: registry} do
     bucket = KV.Registry.create(registry, "shopping")
 
@@ -33,6 +36,7 @@ defmodule KVServer.CommandTest do
     assert KV.Bucket.get(bucket, "milk") == 8
   end
 
+  @tag :distributed
   test "deletes a key", %{registry: registry} do
     bucket = KV.Registry.create(registry, "shopping")
     KV.Bucket.put(bucket, "milk", "9")
