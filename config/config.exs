@@ -16,3 +16,6 @@ import Config
 #       format: "$date $time [$level] $metadata$message\n",
 #       metadata: [:user_id]
 #
+
+# this will run everything on the current node
+config :kv, :routing_table, [{?a..?z, node()}]
