@@ -3,8 +3,8 @@ defmodule KV.RouterTest do
   Test reading & using the routing table.
   Requires separately running two kv nodes:
   `cd apps/kv`
-  `iex --sname a-to-m -S mix`
-  `iex --sname n-to-z -S mix`
+  `iex --sname a_to_m -S mix`
+  `iex --sname n_to_z -S mix`
   """
   use ExUnit.Case
 
@@ -12,8 +12,8 @@ defmodule KV.RouterTest do
     current = Application.get_env(:kv, :routing_table)
 
     Application.put_env(:kv, :routing_table, [
-      {?a..?m, :"a-to-m@htulo"},
-      {?n..?z, :"n-to-z@htulo"}
+      {?a..?m, :a_to_m@htulo},
+      {?n..?z, :n_to_z@htulo}
     ])
 
     on_exit(fn -> Application.put_env(:kv, :routing_table, current) end)
@@ -22,10 +22,10 @@ defmodule KV.RouterTest do
   @tag :distributed
   test "route requests across nodes" do
     assert KV.Router.route("hello", Kernel, :node, []) ==
-             :"a-to-m@htulo"
+             :a_to_m@htulo
 
     assert KV.Router.route("world", Kernel, :node, []) ==
-             :"n-to-z@htulo"
+             :n_to_z@htulo
   end
 
   test "raises on unknown entries" do

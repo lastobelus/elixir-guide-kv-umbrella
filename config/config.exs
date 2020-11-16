@@ -17,5 +17,13 @@ import Config
 #       metadata: [:user_id]
 #
 
-# this will run everything on the current node
-config :kv, :routing_table, [{?a..?z, node()}]
+if Mix.env() == :prod do
+  config :kv, :routing_table, [
+    # later we will make the computer name configurable in `config/releases.ex`
+    {?a..?m, :a_to_m@htulo},
+    {?n..?z, :n_to_z@htulo}
+  ]
+else
+  # this will run everything on the current node
+  config :kv, :routing_table, [{?a..?z, node()}]
+end
